@@ -7,15 +7,24 @@ import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * Token service.
+ */
 @Service
 public class TokenService {
 
   private final Algorithm algorithm;
 
+  /**
+   * token service constructor.
+   */
   public TokenService(@Value("${api.security.token.secret}") String secret) {
     this.algorithm = Algorithm.HMAC256(secret);
   }
 
+  /**
+   * Generate token.
+   */
   public String generateToken(String username) {
     return JWT.create()
         .withSubject(username)
@@ -23,11 +32,17 @@ public class TokenService {
         .sign(algorithm);
   }
 
+  /**
+   * Token expiration time.
+   */
   private Instant generateExpiration() {
     return Instant.now()
         .plus(2, ChronoUnit.HOURS);
   }
 
+  /**
+   * Validate token.
+   */
   public String validateToken(String token) {
     return JWT.require(algorithm)
         .build()
