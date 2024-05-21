@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * Creation crop dto.
  */
 public record PersonCreationDto(
-    String username, String password, Role role
+    String username, String password, String role
 ) {
   public Person toEntity() {
     return new Person(username, password, role);

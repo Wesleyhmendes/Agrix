@@ -7,13 +7,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * Class representing a person.
  */
 @Entity
-public class Person {
+@Table(name = "persons")
+public class Person implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +31,7 @@ public class Person {
 
   private String password;
 
-  private Role role;
+  private String role;
 
   public Person() {
   }
@@ -32,7 +39,7 @@ public class Person {
   /**
    * Constructor person.
    */
-  public Person(String username, String password, Role role) {
+  public Person(String username, String password, String role) {
     this.username = username;
     this.password = password;
     this.role = role;
@@ -62,11 +69,11 @@ public class Person {
     this.password = password;
   }
 
-  public Role getRole() {
+  public String getRole() {
     return role;
   }
 
-  public void setRole(Role role) {
+  public void setRole(String role) {
     this.role = role;
   }
 
@@ -82,6 +89,31 @@ public class Person {
     return Objects.equals(id, person.id) && Objects.equals(username,
         person.username) && Objects.equals(password, person.password)
         && Objects.equals(role, person.role);
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role));
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 }
 
