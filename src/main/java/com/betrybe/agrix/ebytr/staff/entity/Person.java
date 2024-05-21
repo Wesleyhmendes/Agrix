@@ -32,7 +32,7 @@ public class Person implements UserDetails {
 
   private String password;
 
-  private String role;
+  private Role role;
 
   public Person() {
   }
@@ -40,7 +40,7 @@ public class Person implements UserDetails {
   /**
    * Constructor person.
    */
-  public Person(String username, String password, String role) {
+  public Person(String username, String password, Role role) {
     this.username = username;
     this.password = password;
     this.role = role;
@@ -70,11 +70,11 @@ public class Person implements UserDetails {
     this.password = password;
   }
 
-  public String getRole() {
+  public Role getRole() {
     return role;
   }
 
-  public void setRole(String role) {
+  public void setRole(Role role) {
     this.role = role;
   }
 
@@ -94,7 +94,7 @@ public class Person implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role));
+    return List.of(new SimpleGrantedAuthority(role.getName()));
   }
 
   @Override

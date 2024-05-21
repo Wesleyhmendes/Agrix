@@ -37,7 +37,7 @@ public class TokenService {
    */
   private Instant generateExpiration() {
     return Instant.now()
-        .plus(2, ChronoUnit.HOURS);
+        .plus(7, ChronoUnit.DAYS);
   }
 
   /**
