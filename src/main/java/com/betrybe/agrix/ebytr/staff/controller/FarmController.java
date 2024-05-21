@@ -53,7 +53,7 @@ public class FarmController {
    * Get al farms.
    */
   @GetMapping
-  @Secured({"ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"})
+  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_USER')")
   public List<FarmDto> getAllFarms() {
     List<Farm> allFarms = farmService.findAll();
     return allFarms.stream().map(FarmDto::fromEntity).toList();
